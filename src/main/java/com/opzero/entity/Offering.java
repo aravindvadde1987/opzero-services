@@ -1,4 +1,3 @@
-
 package com.opzero.entity;
 
 import jakarta.persistence.Entity;
@@ -9,30 +8,17 @@ import jakarta.persistence.Id;
 @Entity
 
 // Class
-public class Account {
+public class Offering {
 
-	public Long getAccountId() {
-		return accountId;
+	public Offering() {
 	}
 
-	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
-	}
-
-	public Long getOfferingId() {
-		return offeringId;
-	}
-
-	public Account() {
-
-	}
-
-	public Account(Long accountId, Long offeringId, String accountName, String isActive, String createdBy,
+	public Offering(Long offeringId, Long offeringPortfolioId, String offeringName, String isActive, String createdBy,
 			String updatedBy, String createdAt, String updatedAt) {
 		super();
-		this.accountId = accountId;
 		this.offeringId = offeringId;
-		this.accountName = accountName;
+		this.offeringPortfolioId = offeringPortfolioId;
+		this.offeringName = offeringName;
 		this.isActive = isActive;
 		this.createdBy = createdBy;
 		this.updatedBy = updatedBy;
@@ -40,16 +26,32 @@ public class Account {
 		this.updatedAt = updatedAt;
 	}
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long offeringId;
+
+	public Long getOfferingId() {
+		return offeringId;
+	}
+
 	public void setOfferingId(Long offeringId) {
 		this.offeringId = offeringId;
 	}
 
-	public String getAccountName() {
-		return accountName;
+	public Long getOfferingPortfolioId() {
+		return offeringPortfolioId;
 	}
 
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
+	public void setOfferingPortfolioId(Long offeringPortfolioId) {
+		this.offeringPortfolioId = offeringPortfolioId;
+	}
+
+	public String getOfferingName() {
+		return offeringName;
+	}
+
+	public void setOfferingName(String offeringName) {
+		this.offeringName = offeringName;
 	}
 
 	public String getIsActive() {
@@ -92,15 +94,11 @@ public class Account {
 		this.updatedAt = updatedAt;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long accountId;
-	private Long offeringId;
-	private String accountName;
+	private Long offeringPortfolioId;
+	private String offeringName;
 	private String isActive;
 	private String createdBy;
 	private String updatedBy;
 	private String createdAt;
 	private String updatedAt;
-
 }
