@@ -1,5 +1,7 @@
 package com.opzero.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,11 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public Account updateAccount(Account account) {
 		return accountRepository.save(account);
+	}
+
+	@Override
+	public List<Account> getAccounts() {
+		return accountRepository.findAll();
 	}
 
 }

@@ -27,4 +27,8 @@ public class OfferingServiceImpl implements OfferingService {
 		return offeringRepository.save(offering);
 	}
 
+	@Override
+	public java.util.List<Offering> getOfferings() {
+		return offeringRepository.findAll();
+	}
 }

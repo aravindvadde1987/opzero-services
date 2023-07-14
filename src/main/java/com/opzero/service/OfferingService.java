@@ -1,5 +1,7 @@
 package com.opzero.service;
 
+import java.util.List;
+
 import com.opzero.entity.Offering;
 
 public interface OfferingService {
@@ -8,4 +10,6 @@ public interface OfferingService {
 	Offering getOffering(Long offeringId);
 
 	Offering updateOffering(Offering offering);
+
+	List<Offering> getOfferings();
 }
