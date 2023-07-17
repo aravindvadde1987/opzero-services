@@ -1,6 +1,7 @@
 package com.opzero.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,8 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Account getAccount(Long id) {
-		return accountRepository.findByAccountId(id);
+	public Optional<Account> getAccount(Long id) {
+		return accountRepository.findById(id);
 	}
 
 	@Override

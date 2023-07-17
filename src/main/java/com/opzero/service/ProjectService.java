@@ -1,13 +1,14 @@
 package com.opzero.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.opzero.entity.Project;
 
 public interface ProjectService {
 	Project saveProject(Project project);
 
-	Project getProject(Long projectId);
+	Optional<Project> getProject(Long projectId);
 
 	Project updateProject(Project project);
 

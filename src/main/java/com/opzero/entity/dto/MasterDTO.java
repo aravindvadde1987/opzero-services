@@ -1,45 +1,22 @@
 
-package com.opzero.entity;
+package com.opzero.entity.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-@Entity
-public class Account {
+public class MasterDTO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ACCOUNT_ID")
 	private Long id;
-	@Column(name = "OFFERING_ID")
 	private Long foreignKeyId;
-	@Column(name = "ACCOUNT_NAME")
 	private String name;
 	private boolean isActive;
 	private String createdBy;
 	private String updatedBy;
 	private String createdAt;
 	private String updatedAt;
-
-	public Account() {
-
-	}
-
-	public Account(Long id, Long foreignKeyId, String name, boolean isActive, String createdBy, String updatedBy,
-			String createdAt, String updatedAt) {
-		super();
-		this.id = id;
-		this.foreignKeyId = foreignKeyId;
-		this.name = name;
-		this.isActive = isActive;
-		this.createdBy = createdBy;
-		this.updatedBy = updatedBy;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-	}
 
 	public Long getId() {
 		return id;
@@ -72,7 +49,7 @@ public class Account {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-	
+
 	public String getCreatedBy() {
 		return createdBy;
 	}

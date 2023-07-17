@@ -1,6 +1,7 @@
 package com.opzero.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,8 @@ public class OfferingPortfolioServiceImpl implements OfferingPortfolioService {
 	}
 
 	@Override
-	public OfferingPortfolio getOfferingPortfolio(Long offeringPortfolioId) {
-		return offeringPortfolioRepository.findByOfferingPortfolioId(offeringPortfolioId);
+	public Optional<OfferingPortfolio> getOfferingPortfolio(Long id) {
+		return offeringPortfolioRepository.findById(id);
 	}
 
 	@Override

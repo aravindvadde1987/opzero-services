@@ -1,10 +1,11 @@
 package com.opzero.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.opzero.entity.Account;
+import com.opzero.entity.dto.MasterDTO;
 import com.opzero.service.AccountService;
 
 @RestController
@@ -22,38 +24,39 @@ import com.opzero.service.AccountService;
 public class AccountController {
 	@Autowired
 	AccountService accountService;
+	@Autowired
+	ModelMapper modelMapper;
 
-	@GetMapping("/account/{accountId}")
-	public ResponseEntity<Object> getAccount(@PathVariable("accountId") Long accountId) {
-		if (accountService.getAccount(accountId) == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "account is not found for given id " + accountId);
+	@GetMapping("/account/{id}")
+	public MasterDTO getAccount(@PathVariable("id") Long id) {
+		if (!accountService.getAccount(id).isPresent()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "account is not found for given id " + id);
 		}
-		return ResponseEntity.ok(accountService.getAccount(accountId));
+		return modelMapper.map(accountService.getAccount(id).get(), MasterDTO.class);
 	}
 
 	@GetMapping("/accounts")
-	public List<Account> getAccounts() {
+	public List<MasterDTO> getAccounts() {
 		if (accountService.getAccounts().size() == 0) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Accounts not found");
 		}
-		return accountService.getAccounts();
+		return accountService.getAccounts().stream().map(account -> modelMapper.map(account, MasterDTO.class))
+				.collect(Collectors.toList());
 	}
 
 	@PostMapping(value = "/account", consumes = "application/json", produces = "application/json")
-	public Account saveAccount(@RequestBody Account account) {
-		if (accountService.getAccount(account.getAccountId()) != null) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT,
-					"account already exist for given accountId=" + account.getAccountId());
-		}
-		return accountService.saveAccount(account);
+	public MasterDTO saveAccount(@RequestBody MasterDTO masterDTO) {
+		Account account = accountService.saveAccount(modelMapper.map(masterDTO, Account.class));
+		return modelMapper.map(account, MasterDTO.class);
 	}
 
 	@PutMapping(value = "/account", consumes = "application/json", produces = "application/json")
-	public Account updateAccount(@RequestBody Account account) {
-		if (accountService.getAccount(account.getAccountId()) == null) {
+	public MasterDTO updateAccount(@RequestBody MasterDTO masterDTO) {
+		if (!accountService.getAccount(masterDTO.getId()).isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-					"account is not found for given id " + account.getAccountId());
+					"account is not found for given id " + masterDTO.getId());
 		}
-		return accountService.updateAccount(account);
+		Account account = accountService.saveAccount(modelMapper.map(masterDTO, Account.class));
+		return modelMapper.map(account, MasterDTO.class);
 	}
 }

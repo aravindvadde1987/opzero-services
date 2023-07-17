@@ -1,57 +1,65 @@
-
 package com.opzero.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-
-// Class
 public class Project {
-
 	@Id
+	@Column(name = "PROJECT_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long projectId;
-	private Long accountId;
-	private String projectName;
-	private String isActive;
+	private Long id;
+	@Column(name = "ACCOUNT_ID")
+	private Long foreignKeyId;
+	@Column(name = "PROJECT_NAME")
+	private String name;
+	private boolean isActive;
 	private String createdBy;
 	private String updatedBy;
 	private String createdAt;
 	private String updatedAt;
-
-	public Long getAccountId() {
-		return accountId;
-	}
-
-	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
-	}
 	
-	public Long getProjectId() {
-		return projectId;
+	public Project() {
 	}
 
-	public void setProjectId(Long projectId) {
-		this.projectId = projectId;
-	}
-
-	public String getProjectName() {
-		return projectName;
-	}
-
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
-	}
-
-	public String getIsActive() {
-		return isActive;
-	}
-
-	public void setIsActive(String isActive) {
+	public Project(Long id, Long foreignKeyId, String name, boolean isActive, String createdBy, String updatedBy,
+			String createdAt, String updatedAt) {
+		super();
+		this.id = id;
+		this.foreignKeyId = foreignKeyId;
+		this.name = name;
 		this.isActive = isActive;
+		this.createdBy = createdBy;
+		this.updatedBy = updatedBy;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getForeignKeyId() {
+		return foreignKeyId;
+	}
+
+	public void setForeignKeyId(Long foreignKeyId) {
+		this.foreignKeyId = foreignKeyId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getCreatedBy() {
@@ -85,22 +93,12 @@ public class Project {
 	public void setUpdatedAt(String updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
-	public Project() {
-
+	
+	public boolean isActive() {
+		return isActive;
 	}
 
-	public Project(Long projectId, String projectName, String isActive, String createdBy, String updatedBy,
-			String createdAt, String updatedAt, Long accountId) {
-		super();
-		this.projectId = projectId;
-		this.projectName = projectName;
+	public void setActive(boolean isActive) {
 		this.isActive = isActive;
-		this.createdBy = createdBy;
-		this.updatedBy = updatedBy;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.accountId = accountId;
 	}
-
 }

@@ -1,5 +1,6 @@
 package com.opzero.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,20 +10,24 @@ import jakarta.persistence.Id;
 public class OfferingPortfolio {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long offeringPortfolioId;
-	private String offeringPortfolioName;
-	private String isActive;
+	@Column(name = "OFFERING_PORTFOLIO_ID")
+	private Long id;
+	@Column(name = "OFFERING_PORTFOLIO_NAME")
+	private String name;
+	private boolean isActive;
 	private String createdBy;
 	private String updatedBy;
+	private String createdAt;
+	private String updatedAt;
 
 	public OfferingPortfolio() {
 	}
 
-	public OfferingPortfolio(Long offeringPortfolioId, String offeringPortfolioName, String isActive, String createdBy,
-			String updatedBy, String createdAt, String updatedAt) {
+	public OfferingPortfolio(Long id, String name, boolean isActive, String createdBy, String updatedBy,
+			String createdAt, String updatedAt) {
 		super();
-		this.offeringPortfolioId = offeringPortfolioId;
-		this.offeringPortfolioName = offeringPortfolioName;
+		this.id = id;
+		this.name = name;
 		this.isActive = isActive;
 		this.createdBy = createdBy;
 		this.updatedBy = updatedBy;
@@ -30,27 +35,27 @@ public class OfferingPortfolio {
 		this.updatedAt = updatedAt;
 	}
 
-	public Long getOfferingportfolioId() {
-		return offeringPortfolioId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setOfferingportfolioId(Long offeringPortfolioId) {
-		this.offeringPortfolioId = offeringPortfolioId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public String getOfferingPortfolioName() {
-		return offeringPortfolioName;
+	public String getName() {
+		return name;
 	}
 
-	public void setOfferingPortfolioName(String offeringPortfolioName) {
-		this.offeringPortfolioName = offeringPortfolioName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getIsActive() {
+	public boolean isActive() {
 		return isActive;
 	}
 
-	public void setIsActive(String isActive) {
+	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
 
@@ -86,6 +91,4 @@ public class OfferingPortfolio {
 		this.updatedAt = updatedAt;
 	}
 
-	private String createdAt;
-	private String updatedAt;
 }

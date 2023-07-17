@@ -1,7 +1,9 @@
 package com.opzero.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.opzero.entity.Project;
+import com.opzero.entity.dto.MasterDTO;
 import com.opzero.service.ProjectService;
 
 @RestController
@@ -21,38 +24,41 @@ import com.opzero.service.ProjectService;
 public class ProjectController {
 	@Autowired
 	ProjectService projectService;
+	@Autowired
+	ModelMapper modelMapper;
 
-	@GetMapping("/project/{projectId}")
-	public Project getProject(@PathVariable("projectId") Long projectId) {
-		if (projectService.getProject(projectId) == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "project is not found for given id " + projectId);
+	@GetMapping("/project/{id}")
+	public MasterDTO getProject(@PathVariable("id") Long id) {
+		if (!projectService.getProject(id).isPresent()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "project is not found for given id " + id);
 		}
-		return projectService.getProject(projectId);
+		return modelMapper.map(projectService.getProject(id).get(), MasterDTO.class);
 	}
 
 	@GetMapping("/projects")
-	public List<Project> getProjects() {
+	public List<MasterDTO> getProjects() {
 		if (projectService.getProjects().size() == 0) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "projects not found");
 		}
-		return projectService.getProjects();
+		return projectService.getProjects().stream().map(project -> modelMapper.map(project, MasterDTO.class))
+				.collect(Collectors.toList());
 	}
 
 	@PostMapping(value = "/project", consumes = "application/json", produces = "application/json")
-	public Project saveProject(@RequestBody Project project) {
-		if (projectService.getProject(project.getProjectId()) != null) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT,
-					"project already exist for given id " + project.getProjectId());
-		}
-		return projectService.saveProject(project);
+	public MasterDTO saveProject(@RequestBody MasterDTO masterDTO) {
+		Project project = projectService.saveProject(modelMapper.map(masterDTO, Project.class));
+
+		return modelMapper.map(project, MasterDTO.class);
 	}
 
 	@PutMapping(value = "/project", consumes = "application/json", produces = "application/json")
-	public Project updateProject(@RequestBody Project project) {
-		if (projectService.getProject(project.getProjectId()) == null) {
+	public MasterDTO updateProject(@RequestBody MasterDTO masterDTO) {
+		if (!projectService.getProject(masterDTO.getId()).isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-					"project is not found for given id " + project.getProjectId());
+					"project is not found for given id " + masterDTO.getId());
 		}
-		return projectService.updateProject(project);
+		Project project = projectService.saveProject(modelMapper.map(masterDTO, Project.class));
+
+		return modelMapper.map(project, MasterDTO.class);
 	}
 }

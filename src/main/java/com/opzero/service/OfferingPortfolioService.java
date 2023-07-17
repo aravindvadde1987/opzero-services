@@ -1,13 +1,14 @@
 package com.opzero.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.opzero.entity.OfferingPortfolio;
 
 public interface OfferingPortfolioService {
 	OfferingPortfolio saveOfferingPortfolio(OfferingPortfolio offeringPortfolio);
 
-	OfferingPortfolio getOfferingPortfolio(Long offeringPortfolioId);
+	Optional<OfferingPortfolio> getOfferingPortfolio(Long offeringPortfolioId);
 
 	OfferingPortfolio updateOfferingPortfolio(OfferingPortfolio offeringPortfolio);
 	

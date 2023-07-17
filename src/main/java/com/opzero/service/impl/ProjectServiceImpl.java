@@ -1,6 +1,7 @@
 package com.opzero.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,8 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public Project getProject(Long projectId) {
-		return projectRepository.findByProjectId(projectId);
+	public Optional<Project> getProject(Long projectId) {
+		return projectRepository.findById(projectId);
 	}
 
 	@Override

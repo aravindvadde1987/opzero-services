@@ -1,24 +1,36 @@
 package com.opzero.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-
-// Class
 public class Offering {
+	@Id
+	@Column(name = "OFFERING_ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column(name = "OFFERING_PORTFOLIO_ID")
+	private Long foreignKeyId;
+	@Column(name = "OFFERING_NAME")
+	private String name;
+	private boolean isActive;
+	private String createdBy;
+	private String updatedBy;
+	private String createdAt;
+	private String updatedAt;
 
 	public Offering() {
 	}
 
-	public Offering(Long offeringId, Long offeringPortfolioId, String offeringName, String isActive, String createdBy,
-			String updatedBy, String createdAt, String updatedAt) {
+	public Offering(Long id, Long foreignKeyId, String name, boolean isActive, String createdBy, String updatedBy,
+			String createdAt, String updatedAt) {
 		super();
-		this.offeringId = offeringId;
-		this.offeringPortfolioId = offeringPortfolioId;
-		this.offeringName = offeringName;
+		this.id = id;
+		this.foreignKeyId = foreignKeyId;
+		this.name = name;
 		this.isActive = isActive;
 		this.createdBy = createdBy;
 		this.updatedBy = updatedBy;
@@ -26,39 +38,35 @@ public class Offering {
 		this.updatedAt = updatedAt;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long offeringId;
-
-	public Long getOfferingId() {
-		return offeringId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setOfferingId(Long offeringId) {
-		this.offeringId = offeringId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public Long getOfferingPortfolioId() {
-		return offeringPortfolioId;
+	public Long getForeignKeyId() {
+		return foreignKeyId;
 	}
 
-	public void setOfferingPortfolioId(Long offeringPortfolioId) {
-		this.offeringPortfolioId = offeringPortfolioId;
+	public void setForeignKeyId(Long foreignKeyId) {
+		this.foreignKeyId = foreignKeyId;
 	}
 
-	public String getOfferingName() {
-		return offeringName;
+	public String getName() {
+		return name;
 	}
 
-	public void setOfferingName(String offeringName) {
-		this.offeringName = offeringName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getIsActive() {
+	public boolean isActive() {
 		return isActive;
 	}
 
-	public void setIsActive(String isActive) {
+	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
 
@@ -93,12 +101,4 @@ public class Offering {
 	public void setUpdatedAt(String updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
-	private Long offeringPortfolioId;
-	private String offeringName;
-	private String isActive;
-	private String createdBy;
-	private String updatedBy;
-	private String createdAt;
-	private String updatedAt;
 }

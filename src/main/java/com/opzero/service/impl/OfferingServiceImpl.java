@@ -1,5 +1,7 @@
 package com.opzero.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +20,8 @@ public class OfferingServiceImpl implements OfferingService {
 	}
 
 	@Override
-	public Offering getOffering(Long offeringId) {
-		return offeringRepository.findByOfferingId(offeringId);
+	public Optional<Offering> getOffering(Long id) {
+		return offeringRepository.findById(id);
 	}
 
 	@Override
