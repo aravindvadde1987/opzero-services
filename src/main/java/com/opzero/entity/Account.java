@@ -1,6 +1,11 @@
 
 package com.opzero.entity;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,15 +26,18 @@ public class Account {
 	private boolean isActive;
 	private String createdBy;
 	private String updatedBy;
-	private String createdAt;
-	private String updatedAt;
+	@Column(name = "CREATED_AT", nullable = false, updatable = false)
+	@CreationTimestamp
+	private LocalDateTime createdAt;
+	@UpdateTimestamp
+	private LocalDateTime updatedAt;
 
 	public Account() {
 
 	}
 
 	public Account(Long id, Long foreignKeyId, String name, boolean isActive, String createdBy, String updatedBy,
-			String createdAt, String updatedAt) {
+			LocalDateTime createdAt, LocalDateTime updatedAt) {
 		super();
 		this.id = id;
 		this.foreignKeyId = foreignKeyId;
@@ -89,19 +97,19 @@ public class Account {
 		this.updatedBy = updatedBy;
 	}
 
-	public String getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(String createdAt) {
+	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public String getUpdatedAt() {
+	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(String updatedAt) {
+	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 }
