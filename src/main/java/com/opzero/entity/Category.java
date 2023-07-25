@@ -26,7 +26,7 @@ public class Category {
 	@Column(name = "CATEGORY_ID")
 	private Long id;
 	@Column(name = "CATEGORY_NAME")
-	private String name;
+	private String categoryName;
 	private boolean isActive;
 	private String createdBy;
 	private String updatedBy;

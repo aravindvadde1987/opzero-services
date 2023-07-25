@@ -26,9 +26,9 @@ public class Lever {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(name = "CATEGORY_ID")
-	private Long foreignKeyId;
+	private Long categoryId;
 	@Column(name = "LEVER_NAME")
-	private String name;
+	private String leverName;
 	private boolean isActive;
 	private String createdBy;
 	private String updatedBy;

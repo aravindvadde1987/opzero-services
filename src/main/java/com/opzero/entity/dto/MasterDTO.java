@@ -15,7 +15,7 @@ import java.util.List;
 public class MasterDTO {
 
 	private Long id;
-	private Long foreignKeyId;
+	private Long parentId;
 	private String name;
 	private boolean isActive;
 	private String createdBy;

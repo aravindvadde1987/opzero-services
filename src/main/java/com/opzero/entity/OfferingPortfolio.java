@@ -26,7 +26,7 @@ public class OfferingPortfolio {
 	@Column(name = "OFFERING_PORTFOLIO_ID")
 	private Long id;
 	@Column(name = "OFFERING_PORTFOLIO_NAME")
-	private String name;
+	private String offeringPortfolioName;
 	private boolean isActive;
 	private String createdBy;
 	private String updatedBy;

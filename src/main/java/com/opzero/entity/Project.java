@@ -26,9 +26,9 @@ public class Project {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(name = "ACCOUNT_ID")
-	private Long foreignKeyId;
+	private Long accountId;
 	@Column(name = "PROJECT_NAME")
-	private String name;
+	private String projectName;
 	private boolean isActive;
 	private String createdBy;
 	private String updatedBy;

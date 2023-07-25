@@ -28,9 +28,9 @@ public class Account {
 	@Column(name = "ACCOUNT_ID")
 	private Long id;
 	@Column(name = "OFFERING_ID")
-	private Long foreignKeyId;
+	private Long offeringId;
 	@Column(name = "ACCOUNT_NAME")
-	private String name;
+	private String accountName;
 	private boolean isActive;
 	private String createdBy;
 	private String updatedBy;
