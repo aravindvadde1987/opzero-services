@@ -28,12 +28,12 @@ public class MasterDTO {
 	private Long fiscalYearQuarterId;
 	private Long leverId;
 	private Long projectId;
-	private double avgEffortPerInc;
-	private double totalIncidents;
-	private double totalEffort;
-	private double automatedPercent;
-	private double effortPercent;
-	private double effortSaved;
+	private Double avgEffortPerInc;
+	private Double totalIncidents;
+	private Double totalEffort;
+	private Double automatedPercent;
+	private Double effortPercent;
+	private Double effortSaved;
 	private String fiscalYearQuarterDesc;
 	private Date startDate;
 	private Date endDate;
