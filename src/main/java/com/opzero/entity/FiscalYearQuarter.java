@@ -9,27 +9,22 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Project {
+public class FiscalYearQuarter {
     @Id
-    @Column(name = "PROJECT_ID")
+    @Column(name = "FISCAL_YEAR_QUARTER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "ACCOUNT_ID")
-    private Long accountId;
-    @Column(name = "PROJECT_NAME")
-    private String projectName;
-    private String scopeOfWork;
-    private Long teamSize;
-    private Long onshoreSize;
-    private Long offshoreSize;
-    private String engagementType;
-    private String operatingModel;
+    @Column(name = "FISCAL_YEAR_QUARTER_DESC")
+    private String fiscalYearQuarterDesc;
+    private Date startDate;
+    private Date endDate;
     private boolean isActive;
     private String createdBy;
     private String updatedBy;

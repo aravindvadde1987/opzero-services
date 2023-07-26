@@ -1,17 +1,14 @@
 package com.opzero.service.impl;
 
-import java.util.List;
-import java.util.Optional;
-
-import com.opzero.entity.Lever;
+import com.opzero.entity.Category;
+import com.opzero.repository.CategoryRepository;
 import com.opzero.repository.LeverRepository;
+import com.opzero.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.opzero.entity.Category;
-import com.opzero.repository.CategoryRepository;
-import com.opzero.service.CategoryService;
-import org.springframework.util.ObjectUtils;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
