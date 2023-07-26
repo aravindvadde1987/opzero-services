@@ -15,22 +15,27 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Project {
+public class DataDetail {
     @Id
-    @Column(name = "PROJECT_ID")
+    @Column(name = "DATA_DETAIL_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "ACCOUNT_ID")
-    private Long accountId;
-    @Column(name = "PROJECT_NAME")
-    private String projectName;
-    private String scopeOfWork;
-    private Long teamSize;
-    private Long onshoreSize;
-    private Long offshoreSize;
-    private String engagementType;
-    private String operatingModel;
-    private boolean isActive;
+    @Column(name = "FISCAL_YEAR_QUARTER_ID")
+    private Long fiscalYearQuarterId;
+    private Long leverId;
+    private Long projectId;
+    @Column(name = "AVG_EFFORT_PER_INC")
+    private double avgEffortPerInc;
+    @Column(name = "TOTAL_INCIDENTS")
+    private double totalIncidents;
+    @Column(name = "TOTAL_EFFORT")
+    private double totalEffort;
+    @Column(name = "AUTOMATED_PERCENT")
+    private double automatedPercent;
+    @Column(name = "EFFORT_PERCENT")
+    private double effortPercent;
+    @Column(name = "EFFORT_SAVED")
+    private double effortSaved;
     private String createdBy;
     private String updatedBy;
     @Column(name = "CREATED_AT", nullable = false, updatable = false)
