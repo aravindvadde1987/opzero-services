@@ -39,6 +39,7 @@ public class MapperUtil {
         masterToCategoryType.addMapping(MasterDTO::getName, Category::setCategoryName);
         TypeMap<Category, MasterDTO> categoryToMasterType=this.modelMapper.createTypeMap(Category.class, MasterDTO.class);
         categoryToMasterType.addMapping(Category::getCategoryName, MasterDTO::setName);
+        categoryToMasterType.addMapping(Category::getLevers, MasterDTO::setChildrens);
 
         //Lever
         TypeMap<MasterDTO, Lever> masterToLeverType=this.modelMapper.createTypeMap(MasterDTO.class, Lever.class);

@@ -8,4 +8,5 @@ import com.opzero.entity.Lever;
 
 public interface LeverRepository extends CrudRepository<Lever, Long> {
 	List<Lever> findAll();
+	List<Lever> findByCategoryId(Long categoryId);
 }

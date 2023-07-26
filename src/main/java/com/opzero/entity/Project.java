@@ -29,6 +29,12 @@ public class Project {
 	private Long accountId;
 	@Column(name = "PROJECT_NAME")
 	private String projectName;
+	private String scopeOfWork;
+	private Long teamSize;
+	private Long onshoreSize;
+	private Long offshoreSize;
+	private String engagementType;
+	private String operatingModel;
 	private boolean isActive;
 	private String createdBy;
 	private String updatedBy;
