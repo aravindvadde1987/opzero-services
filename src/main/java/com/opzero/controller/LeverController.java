@@ -32,9 +32,6 @@ public class LeverController {
 
 	@GetMapping("/levers")
 	public List<MasterDTO> getLevers() {
-		if (leverService.getLevers().size() == 0) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Levers not found");
-		}
 		return leverService.getLevers().stream().map(lever -> mapperUtil.getModelMapper().map(lever, MasterDTO.class))
 				.collect(Collectors.toList());
 	}

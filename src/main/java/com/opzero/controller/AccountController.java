@@ -32,9 +32,6 @@ public class AccountController {
 
 	@GetMapping("/accounts")
 	public List<MasterDTO> getAccounts() {
-		if (accountService.getAccounts().size() == 0) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Accounts not found");
-		}
 		return accountService.getAccounts().stream().map(account -> mapperUtil.getModelMapper().map(account, MasterDTO.class))
 				.collect(Collectors.toList());
 	}

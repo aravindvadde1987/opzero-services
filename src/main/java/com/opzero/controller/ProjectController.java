@@ -32,9 +32,6 @@ public class ProjectController {
 
     @GetMapping("/projects")
     public List<MasterDTO> getProjects() {
-        if (projectService.getProjects().size() == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "projects not found");
-        }
         return projectService.getProjects().stream().map(project -> mapperUtil.getModelMapper().map(project, MasterDTO.class)).collect(Collectors.toList());
     }
 

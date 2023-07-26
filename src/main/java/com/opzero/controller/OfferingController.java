@@ -34,9 +34,6 @@ public class OfferingController {
 
     @GetMapping("/offerings")
     public List<MasterDTO> getOfferings() {
-        if (offeringService.getOfferings().size() == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "offerings not found");
-        }
         return offeringService.getOfferings().stream().map(offering -> mapperUtil.getModelMapper().map(offering, MasterDTO.class))
                 .collect(Collectors.toList());
     }
