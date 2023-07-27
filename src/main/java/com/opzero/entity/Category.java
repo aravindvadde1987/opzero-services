@@ -23,6 +23,7 @@ public class Category {
 	private Long id;
 	@Column(name = "CATEGORY_NAME")
 	private String categoryName;
+	private Long displayOrder;
 	private boolean isActive;
 	private String createdBy;
 	private String updatedBy;

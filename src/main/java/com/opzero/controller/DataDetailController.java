@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/api")
@@ -55,20 +56,29 @@ public class DataDetailController {
         return dataDetailService.getDataDetails().stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
     }
 
-    @PostMapping(value = "/dataDetail", consumes = "application/json", produces = "application/json")
-    public MasterDTO saveDataDetail(@RequestBody MasterDTO masterDTO) {
-        DataDetail dataDetail = dataDetailService.saveDataDetail(mapperUtil.getModelMapper().map(masterDTO, DataDetail.class));
+    @PostMapping(value = "/dataDetails", consumes = "application/json", produces = "application/json")
+    public List<MasterDTO> saveDataDetail(@RequestBody List<MasterDTO> masterDTOList) {
+        List<DataDetail> dataDetailList = masterDTOList.stream()
+                .map(masterDTO -> mapperUtil.getModelMapper().map(masterDTO, DataDetail.class))
+                .collect(Collectors.toList());
 
-        return mapperUtil.getModelMapper().map(dataDetail, MasterDTO.class);
+        Iterable<DataDetail> savedDataDetails = dataDetailService.saveDataDetails(dataDetailList);
+
+        return StreamSupport.stream(savedDataDetails.spliterator(), false)
+                .map(dataDetail -> mapperUtil.getModelMapper().map(dataDetail, MasterDTO.class))
+                .collect(Collectors.toList());
     }
 
-    @PutMapping(value = "/dataDetail", consumes = "application/json", produces = "application/json")
-    public MasterDTO updateDataDetail(@RequestBody MasterDTO masterDTO) {
-        if (dataDetailService.getDataDetail(masterDTO.getId()).isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "dataDetail is not found for given id " + masterDTO.getId());
-        }
-        DataDetail dataDetail = dataDetailService.saveDataDetail(mapperUtil.getModelMapper().map(masterDTO, DataDetail.class));
+    @PutMapping(value = "/dataDetails", consumes = "application/json", produces = "application/json")
+    public List<MasterDTO> updateDataDetails(@RequestBody List<MasterDTO> masterDTOList) {
+        List<DataDetail> dataDetailList = masterDTOList.stream()
+                .map(masterDTO -> mapperUtil.getModelMapper().map(masterDTO, DataDetail.class))
+                .collect(Collectors.toList());
 
-        return mapperUtil.getModelMapper().map(dataDetail, MasterDTO.class);
+        Iterable<DataDetail> savedDataDetails = dataDetailService.saveDataDetails(dataDetailList);
+
+        return StreamSupport.stream(savedDataDetails.spliterator(), false)
+                .map(dataDetail -> mapperUtil.getModelMapper().map(dataDetail, MasterDTO.class))
+                .collect(Collectors.toList());
     }
 }

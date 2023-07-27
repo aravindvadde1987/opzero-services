@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DataDetailService {
-    DataDetail saveDataDetail(DataDetail dataDetail);
+    Iterable<DataDetail> saveDataDetails(List<DataDetail> dataDetail);
 
     Optional<DataDetail> getDataDetail(Long dataDetailId);
 
-    DataDetail updateDataDetail(DataDetail dataDetail);
+    DataDetail updateDataDetails(DataDetail dataDetail);
 
     List<DataDetail> getDataDetails();
 
