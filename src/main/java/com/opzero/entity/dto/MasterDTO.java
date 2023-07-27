@@ -30,6 +30,7 @@ public class MasterDTO {
 	private String operatingModel;
 	private Long fiscalYearQuarterId;
 	private Long leverId;
+	private Long displayOrder;
 	private Long projectId;
 	private Double avgEffortPerInc;
 	private Double totalIncidents;
