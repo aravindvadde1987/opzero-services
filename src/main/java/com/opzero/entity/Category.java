@@ -32,7 +32,6 @@ public class Category {
 	private LocalDateTime createdAt;
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
-	@OneToMany
-	@JoinColumn(name = "LEVER_ID")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
     private List<Lever> levers;
 }
