@@ -43,10 +43,10 @@ public class MapperUtil {
 
         //Lever
         TypeMap<MasterDTO, Lever> masterToLeverType=this.modelMapper.createTypeMap(MasterDTO.class, Lever.class);
-        masterToLeverType.addMapping(MasterDTO::getParentId, Lever::setCategoryId);
         masterToLeverType.addMapping(MasterDTO::getName, Lever::setLeverName);
         TypeMap<Lever, MasterDTO> leverToMasterType=this.modelMapper.createTypeMap(Lever.class, MasterDTO.class);
-        leverToMasterType.addMapping(Lever::getCategoryId, MasterDTO::setParentId);
+        leverToMasterType.addMapping(lever -> lever.getCategory().getId(), MasterDTO::setParentId);
+
         leverToMasterType.addMapping(Lever::getLeverName, MasterDTO::setName);
 
         //Offering Portfolio

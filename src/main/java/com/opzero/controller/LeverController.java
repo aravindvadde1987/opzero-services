@@ -3,6 +3,7 @@ package com.opzero.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.opzero.service.CategoryService;
 import com.opzero.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,8 @@ import com.opzero.service.LeverService;
 public class LeverController {
 	@Autowired
 	LeverService leverService;
+	@Autowired
+	CategoryService categoryService;
 	@Autowired
 	MapperUtil mapperUtil;
 
@@ -38,9 +41,11 @@ public class LeverController {
 
 	@PostMapping(value = "/lever", consumes = "application/json", produces = "application/json")
 	public MasterDTO saveLever(@RequestBody MasterDTO masterDTO) {
-		Lever Lever = leverService.saveLever(mapperUtil.getModelMapper().map(masterDTO, Lever.class));
+		Lever input = mapperUtil.getModelMapper().map(masterDTO, Lever.class);
+		input.setCategory(categoryService.getCategory(masterDTO.getParentId()).get());
+		Lever lever = leverService.saveLever(input);
 
-		return mapperUtil.getModelMapper().map(Lever, MasterDTO.class);
+		return mapperUtil.getModelMapper().map(lever, MasterDTO.class);
 	}
 
 	@PutMapping(value = "/lever", consumes = "application/json", produces = "application/json")
@@ -49,8 +54,9 @@ public class LeverController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND,
 					"Lever is not found for given id " + masterDTO.getId());
 		}
-		Lever lever = leverService.saveLever(mapperUtil.getModelMapper().map(masterDTO, Lever.class));
-
+		Lever input = mapperUtil.getModelMapper().map(masterDTO, Lever.class);
+		input.setCategory(categoryService.getCategory(masterDTO.getParentId()).get());
+		Lever lever = leverService.saveLever(input);
 		return mapperUtil.getModelMapper().map(lever, MasterDTO.class);
 	}
 }
