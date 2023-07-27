@@ -4,7 +4,9 @@ import com.opzero.entity.DataDetail;
 import com.opzero.repository.DataDetailRepository;
 import com.opzero.service.DataDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,8 +41,13 @@ public class DataDetailServiceImpl implements DataDetailService {
         return dataDetailRepository.findByProjectId(projectId);
     }
 
-    @Override
-    public List<DataDetail> getDataDetailsByFiscalYearQuarterId(Long fiscalYearQuarterId) {
-        return dataDetailRepository.findByFiscalYearQuarterId(fiscalYearQuarterId);
-    }
+	@Override
+	public List<DataDetail> getDataDetailByProjectIdAndQuarterId(Long projectId, Long quarterId){
+		return dataDetailRepository.findByProjectIdAndFiscalYearQuarterId(projectId,quarterId)
+				.orElseThrow(()->  new ResponseStatusException(HttpStatus.NOT_FOUND, "DataDetail is not found for given projectId " + projectId));
+	}
+	@Override
+	public List<DataDetail> getDataDetailsByFiscalYearQuarterId(Long fiscalYearQuarterId) {
+		return dataDetailRepository.findByFiscalYearQuarterId(fiscalYearQuarterId);
+	}
 }

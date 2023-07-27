@@ -38,6 +38,11 @@ public class DataDetailController {
         return dataDetailService.getDataDetailsByProjectId(projectId).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
     }
 
+    @GetMapping("/dataDetail/project/{projectId}/{quarterId}")
+    public List<MasterDTO> getDataDetailByProjectIdAndQuarterId(@PathVariable("projectId") Long projectId,@PathVariable("quarterId") Long quarterId) {
+        return dataDetailService.getDataDetailByProjectIdAndQuarterId(projectId,quarterId).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
+    }
+
     @GetMapping("/dataDetail/fiscalYearQuarter/{quarterId}")
     public List<MasterDTO> getDataDetailByQuarterId(@PathVariable("quarterId") Long quarterId) {
         if (dataDetailService.getDataDetailsByFiscalYearQuarterId(quarterId).size() == 0) {
@@ -48,9 +53,6 @@ public class DataDetailController {
 
     @GetMapping("/dataDetails")
     public List<MasterDTO> getDataDetails() {
-        if (dataDetailService.getDataDetails().size() == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "dataDetails not found");
-        }
         return dataDetailService.getDataDetails().stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
     }
 

@@ -33,9 +33,6 @@ public class OfferingPortfolioController {
 
     @GetMapping("/offeringPortfolios")
     public List<MasterDTO> getOfferingPortfolios() {
-        if (offeringPortfolioService.getOfferingPortfolios().size() == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "offering Porfotilos not found");
-        }
         return offeringPortfolioService.getOfferingPortfolios().stream()
                 .map(offeringPortfolio -> mapperUtil.getModelMapper().map(offeringPortfolio, MasterDTO.class))
                 .collect(Collectors.toList());

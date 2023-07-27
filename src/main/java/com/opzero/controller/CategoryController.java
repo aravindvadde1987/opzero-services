@@ -32,9 +32,6 @@ public class CategoryController {
 
 	@GetMapping("/categories")
 	public List<MasterDTO> getCategorys() {
-		if (categoryService.getCategories().size() == 0) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Categories not found");
-		}
 		return categoryService.getCategories().stream().map(category -> mapperUtil.getModelMapper().map(category, MasterDTO.class))
 				.collect(Collectors.toList());
 	}

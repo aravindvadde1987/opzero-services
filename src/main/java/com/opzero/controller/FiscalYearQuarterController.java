@@ -31,9 +31,6 @@ public class FiscalYearQuarterController {
 
     @GetMapping("/fiscalYearQuarters")
     public List<MasterDTO> getFiscalYearQuarters() {
-        if (fiscalYearQuarterService.getFiscalYearQuarters().size() == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "FiscalYearQuarters not found");
-        }
         return fiscalYearQuarterService.getFiscalYearQuarters().stream().map(fiscalYearQuarter -> mapperUtil.getModelMapper().map(fiscalYearQuarter, MasterDTO.class)).collect(Collectors.toList());
     }
 
