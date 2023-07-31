@@ -17,38 +17,47 @@ import com.opzero.service.CategoryService;
 @RequestMapping("/api")
 @CrossOrigin
 public class CategoryController {
-	@Autowired
-	CategoryService categoryService;
-	@Autowired
-	MapperUtil mapperUtil;
+    @Autowired
+    CategoryService categoryService;
+    @Autowired
+    MapperUtil mapperUtil;
 
-	@GetMapping("/category/{id}")
-	public MasterDTO getCategory(@PathVariable("id") Long id) {
-		if (!categoryService.getCategory(id).isPresent()) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category is not found for given id " + id);
-		}
-		return mapperUtil.getModelMapper().map(categoryService.getCategory(id).get(), MasterDTO.class);
-	}
+    @GetMapping("/category/{id}")
+    public MasterDTO getCategory(@PathVariable("id") Long id) {
+        if (!categoryService.getCategory(id).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category is not found for given id " + id);
+        }
+        return mapperUtil.getModelMapper().map(categoryService.getCategory(id).get(), MasterDTO.class);
+    }
 
-	@GetMapping("/categories")
-	public List<MasterDTO> getCategorys() {
-		return categoryService.getCategories().stream().map(category -> mapperUtil.getModelMapper().map(category, MasterDTO.class))
-				.collect(Collectors.toList());
-	}
+    @GetMapping("/categories")
+    public List<MasterDTO> getCategorys() {
+        return categoryService.getCategories().stream().map(category -> mapperUtil.getModelMapper().map(category, MasterDTO.class)).collect(Collectors.toList());
+    }
 
-	@PostMapping(value = "/category", consumes = "application/json", produces = "application/json")
-	public MasterDTO saveCategory(@RequestBody MasterDTO masterDTO) {
-		Category category = categoryService.saveCategory(mapperUtil.getModelMapper().map(masterDTO, Category.class));
-		return mapperUtil.getModelMapper().map(category, MasterDTO.class);
-	}
+    @GetMapping("/activeCategories")
+    public List<MasterDTO> getActiveCategorys() {
+        List<MasterDTO> categories = categoryService.getCategories().stream().map(category -> mapperUtil.getModelMapper().map(category, MasterDTO.class)).filter(masterDto -> masterDto.isActive()).collect(Collectors.toList());
 
-	@PutMapping(value = "/category", consumes = "application/json", produces = "application/json")
-	public MasterDTO updateCategory(@RequestBody MasterDTO masterDTO) {
-		if (!categoryService.getCategory(masterDTO.getId()).isPresent()) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-					"Category is not found for given id " + masterDTO.getId());
-		}
-		Category category = categoryService.saveCategory(mapperUtil.getModelMapper().map(masterDTO, Category.class));
-		return mapperUtil.getModelMapper().map(category, MasterDTO.class);
-	}
+        for (MasterDTO category : categories) {
+            List<MasterDTO> childrens = category.getChildrens().stream().filter(masterDto -> masterDto.isActive()).collect(Collectors.toList());
+            category.setChildrens(childrens);
+        }
+        return categories;
+    }
+
+    @PostMapping(value = "/category", consumes = "application/json", produces = "application/json")
+    public MasterDTO saveCategory(@RequestBody MasterDTO masterDTO) {
+        Category category = categoryService.saveCategory(mapperUtil.getModelMapper().map(masterDTO, Category.class));
+        return mapperUtil.getModelMapper().map(category, MasterDTO.class);
+    }
+
+    @PutMapping(value = "/category", consumes = "application/json", produces = "application/json")
+    public MasterDTO updateCategory(@RequestBody MasterDTO masterDTO) {
+        if (!categoryService.getCategory(masterDTO.getId()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category is not found for given id " + masterDTO.getId());
+        }
+        Category category = categoryService.saveCategory(mapperUtil.getModelMapper().map(masterDTO, Category.class));
+        return mapperUtil.getModelMapper().map(category, MasterDTO.class);
+    }
 }
