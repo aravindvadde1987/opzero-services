@@ -49,4 +49,29 @@ INSERT INTO OPZR.LEVER_FLOW(LEVER_ID,LEVER_FLOW_NAME) VALUES (1,"Create Incident
 
 INSERT INTO OPZR.FISCAL_YEAR_QUARTER(FISCAL_YEAR_QUARTER_DESC) VALUES ("FY2024-Q1");
 
-INSERT INTO OPZR.DATA_DETAIL(FISCAL_YEAR_QUARTER_ID,LEVER_ID,PROJECT_ID) VALUES (1,1,1);
+INSERT INTO OPZR.DATA_DETAIL (
+    FISCAL_YEAR_QUARTER_ID,
+    LEVER_ID,
+    PROJECT_ID,
+    AVG_EFFORT_PER_INC,
+    TOTAL_INCIDENTS,
+    TOTAL_EFFORT,
+    AUTOMATED_PERCENT,
+    EFFORT_PERCENT,
+    EFFORT_SAVED,
+    CREATED_BY,
+    UPDATED_BY
+) VALUES (
+    1,  -- Replace with the actual value for FISCAL_YEAR_QUARTER_ID
+    1,  -- Replace with the actual value for LEVER_ID
+    1,  -- Replace with the actual value for PROJECT_ID
+    1.23, -- Replace with the actual value for AVG_EFFORT_PER_INC
+    4.56, -- Replace with the actual value for TOTAL_INCIDENTS
+    7.89, -- Replace with the actual value for TOTAL_EFFORT
+    20.5, -- Replace with the actual value for AUTOMATED_PERCENT
+    80.5, -- Replace with the actual value for EFFORT_PERCENT
+    5.43, -- Replace with the actual value for EFFORT_SAVED
+    'John Doe',     -- Replace with the actual value for CREATED_BY
+    'Jane Smith'    -- Replace with the actual value for UPDATED_BY
+);
+
