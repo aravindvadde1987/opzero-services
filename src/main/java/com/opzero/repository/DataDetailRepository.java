@@ -11,6 +11,8 @@ public interface DataDetailRepository extends CrudRepository<DataDetail, Long> {
 
     List<DataDetail> findByProjectId(Long projectId);
 
+    List<DataDetail> findByLeverId(Long leverId);
+
     List<DataDetail> findByFiscalYearQuarterId(Long quarterId);
 
     Optional<List<DataDetail>> findByProjectIdAndFiscalYearQuarterId(Long projectId, Long quarterId);

@@ -22,6 +22,7 @@ public class MasterDTO {
 	private Long id;
 	private Long parentId;
 	private String name;
+	private String projectName;
 	private String scopeOfWork;
 	private Long teamSize;
 	private Long onshoreSize;

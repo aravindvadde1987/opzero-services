@@ -3,6 +3,7 @@ package com.opzero.controller;
 import com.opzero.entity.DataDetail;
 import com.opzero.entity.dto.MasterDTO;
 import com.opzero.service.DataDetailService;
+import com.opzero.service.ProjectService;
 import com.opzero.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,8 @@ import java.util.stream.StreamSupport;
 public class DataDetailController {
     @Autowired
     DataDetailService dataDetailService;
+    @Autowired
+    ProjectService projectService;
     @Autowired
     MapperUtil mapperUtil;
 
@@ -38,9 +41,21 @@ public class DataDetailController {
         return dataDetailService.getDataDetailsByProjectId(projectId).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
     }
 
+    @GetMapping("/dataDetail/leverProjects/{leverId}")
+    public List<MasterDTO> getProjectDataDetailsByLeverId(@PathVariable("leverId") Long leverId) {
+        if (dataDetailService.getDataDetailsByLeverId(leverId).size() == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "DataDetail is not found for given leverId " + leverId);
+        }
+        List<MasterDTO> response = dataDetailService.getDataDetailsByLeverId(leverId).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
+        for (MasterDTO masterDTO : response) {
+            masterDTO.setProjectName(projectService.getProject(masterDTO.getProjectId()).get().getProjectName());
+        }
+        return response;
+    }
+
     @GetMapping("/dataDetail/project/{projectId}/{quarterId}")
-    public List<MasterDTO> getDataDetailByProjectIdAndQuarterId(@PathVariable("projectId") Long projectId,@PathVariable("quarterId") Long quarterId) {
-        return dataDetailService.getDataDetailByProjectIdAndQuarterId(projectId,quarterId).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
+    public List<MasterDTO> getDataDetailByProjectIdAndQuarterId(@PathVariable("projectId") Long projectId, @PathVariable("quarterId") Long quarterId) {
+        return dataDetailService.getDataDetailByProjectIdAndQuarterId(projectId, quarterId).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
     }
 
     @GetMapping("/dataDetail/fiscalYearQuarter/{quarterId}")
