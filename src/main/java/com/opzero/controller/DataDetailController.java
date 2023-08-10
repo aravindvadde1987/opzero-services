@@ -1,6 +1,7 @@
 package com.opzero.controller;
 
 import com.opzero.entity.DataDetail;
+import com.opzero.entity.Project;
 import com.opzero.entity.dto.MasterDTO;
 import com.opzero.service.DataDetailService;
 import com.opzero.service.ProjectService;
@@ -48,7 +49,9 @@ public class DataDetailController {
         }
         List<MasterDTO> response = dataDetailService.getDataDetailsByLeverId(leverId).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
         for (MasterDTO masterDTO : response) {
-            masterDTO.setProjectName(projectService.getProject(masterDTO.getProjectId()).get().getProjectName());
+            Project proj=projectService.getProject(masterDTO.getProjectId()).get();
+            masterDTO.setProjectName(proj.getProjectName());
+            masterDTO.setActive(proj.isActive());
         }
         return response;
     }

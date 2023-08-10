@@ -35,6 +35,10 @@ public class ProjectController {
         return projectService.getProjects().stream().map(project -> mapperUtil.getModelMapper().map(project, MasterDTO.class)).collect(Collectors.toList());
     }
 
+    @GetMapping("/activeProjects")
+    public List<MasterDTO> getActiveProjects() {
+        return projectService.getActiveProjects();
+    }
     @PostMapping(value = "/project", consumes = "application/json", produces = "application/json")
     public MasterDTO saveProject(@RequestBody MasterDTO masterDTO) {
         Project project = projectService.saveProject(mapperUtil.getModelMapper().map(masterDTO, Project.class));
