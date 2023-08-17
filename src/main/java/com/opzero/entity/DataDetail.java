@@ -36,6 +36,11 @@ public class DataDetail {
     private Double effortPercent;
     @Column(name = "EFFORT_SAVED")
     private Double effortSaved;
+
+    @Column(name = "SOL_IMPLEMENTED")
+    private String solutionImplemented;
+    @Column(name = "SOL_link")
+    private String solutionLink;
     private String createdBy;
     private String updatedBy;
     @Column(name = "CREATED_AT", nullable = false, updatable = false)

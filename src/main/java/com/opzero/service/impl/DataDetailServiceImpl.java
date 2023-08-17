@@ -47,6 +47,11 @@ public class DataDetailServiceImpl implements DataDetailService {
     }
 
     @Override
+    public List<DataDetail> getDataDetailsByLeverIdAndfinQtrId(Long leverId,Long fiscalYearQuarterId) {
+        return dataDetailRepository.findByLeverIdAndFiscalYearQuarterId(leverId,fiscalYearQuarterId);
+    }
+
+    @Override
 	public List<DataDetail> getDataDetailByProjectIdAndQuarterId(Long projectId, Long quarterId){
 		return dataDetailRepository.findByProjectIdAndFiscalYearQuarterId(projectId,quarterId)
 				.orElseThrow(()->  new ResponseStatusException(HttpStatus.NOT_FOUND, "DataDetail is not found for given projectId " + projectId));

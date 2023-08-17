@@ -39,6 +39,9 @@ public class MasterDTO {
 	private Double automatedPercent;
 	private Double effortPercent;
 	private Double effortSaved;
+
+	private String solutionImplemented;
+	private String solutionLink;
 	private String fiscalYearQuarterDesc;
 	private Date startDate;
 	private Date endDate;

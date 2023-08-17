@@ -19,6 +19,8 @@ public interface DataDetailService {
 
     public List<DataDetail> getDataDetailsByLeverId(Long leverId);
 
+    public List<DataDetail> getDataDetailsByLeverIdAndfinQtrId(Long leverId,Long fiscalYearQuarterId);
+
     public List<DataDetail> getDataDetailsByFiscalYearQuarterId(Long fiscalYearQuarterId);
 
     List<DataDetail> getDataDetailByProjectIdAndQuarterId(Long projectId, Long quarterId);
