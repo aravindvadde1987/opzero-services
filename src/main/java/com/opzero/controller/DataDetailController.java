@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -49,7 +51,7 @@ public class DataDetailController {
         }
         List<MasterDTO> response = dataDetailService.getDataDetailsByLeverId(leverId).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
         for (MasterDTO masterDTO : response) {
-            Project proj=projectService.getProject(masterDTO.getProjectId()).get();
+            Project proj = projectService.getProject(masterDTO.getProjectId()).get();
             masterDTO.setProjectName(proj.getProjectName());
             masterDTO.setActive(proj.isActive());
         }
@@ -57,13 +59,13 @@ public class DataDetailController {
     }
 
     @GetMapping("/dataDetail/leverProjects/{leverId}/{fiscalYearQuarterId}")
-    public List<MasterDTO> getProjectDataDetailsByLeverIdAndFiscalYearQuarterId(@PathVariable("leverId") Long leverId,@PathVariable("fiscalYearQuarterId") Long fiscalYearQuarterId) {
-        if (dataDetailService.getDataDetailsByLeverIdAndfinQtrId(leverId,fiscalYearQuarterId).size() == 0) {
+    public List<MasterDTO> getProjectDataDetailsByLeverIdAndFiscalYearQuarterId(@PathVariable("leverId") Long leverId, @PathVariable("fiscalYearQuarterId") Long fiscalYearQuarterId) {
+        if (dataDetailService.getDataDetailsByLeverIdAndfinQtrId(leverId, fiscalYearQuarterId).size() == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "DataDetail is not found for given leverId " + leverId);
         }
-        List<MasterDTO> response = dataDetailService.getDataDetailsByLeverIdAndfinQtrId(leverId,fiscalYearQuarterId).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
+        List<MasterDTO> response = dataDetailService.getDataDetailsByLeverIdAndfinQtrId(leverId, fiscalYearQuarterId).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
         for (MasterDTO masterDTO : response) {
-            Project proj=projectService.getProject(masterDTO.getProjectId()).get();
+            Project proj = projectService.getProject(masterDTO.getProjectId()).get();
             masterDTO.setProjectName(proj.getProjectName());
             masterDTO.setActive(proj.isActive());
         }
@@ -72,7 +74,17 @@ public class DataDetailController {
 
     @GetMapping("/dataDetail/project/{projectId}/{quarterId}")
     public List<MasterDTO> getDataDetailByProjectIdAndQuarterId(@PathVariable("projectId") Long projectId, @PathVariable("quarterId") Long quarterId) {
-        return dataDetailService.getDataDetailByProjectIdAndQuarterId(projectId, quarterId).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
+        List<MasterDTO> response = dataDetailService.getDataDetailByProjectIdAndQuarterId(projectId, quarterId).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
+        if (response.isEmpty()) {
+// get latest quarterId Details
+            return dataDetailService.getDataDetailsByProjectId(projectId)
+                    .stream()
+                    .max(Comparator.comparingInt(dataDetails -> Math.toIntExact(dataDetails.getFiscalYearQuarterId())))
+                    .map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class))
+                    .map(Collections::singletonList)
+                    .orElse(Collections.emptyList());
+        } else
+            return response;
     }
 
     @GetMapping("/dataDetail/fiscalYearQuarter/{quarterId}")
