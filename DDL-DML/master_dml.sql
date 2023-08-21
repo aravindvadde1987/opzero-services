@@ -59,6 +59,8 @@ INSERT INTO OPZR.DATA_DETAIL (
     AUTOMATED_PERCENT,
     EFFORT_PERCENT,
     EFFORT_SAVED,
+    SOL_IMPLEMENTED,
+    SL_LINK,
     CREATED_BY,
     UPDATED_BY
 ) VALUES (
@@ -72,6 +74,8 @@ INSERT INTO OPZR.DATA_DETAIL (
     80.5, -- Replace with the actual value for EFFORT_PERCENT
     5.43, -- Replace with the actual value for EFFORT_SAVED
     'John Doe',     -- Replace with the actual value for CREATED_BY
+    'solution',
+    'link',
     'Jane Smith'    -- Replace with the actual value for UPDATED_BY
 );
 

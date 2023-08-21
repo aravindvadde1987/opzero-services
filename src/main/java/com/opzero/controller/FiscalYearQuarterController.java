@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +34,9 @@ public class FiscalYearQuarterController {
 
     @GetMapping("/fiscalYearQuarters")
     public List<MasterDTO> getFiscalYearQuarters() {
-        return fiscalYearQuarterService.getFiscalYearQuarters().stream().map(fiscalYearQuarter -> mapperUtil.getModelMapper().map(fiscalYearQuarter, MasterDTO.class)).collect(Collectors.toList());
+        Date currentDate = new Date();
+        return fiscalYearQuarterService.getFiscalYearQuarters().stream().filter(fiscalYearQuarter -> fiscalYearQuarter.getEndDate().compareTo(currentDate) <= 0).map(fiscalYearQuarter -> mapperUtil.getModelMapper().map(fiscalYearQuarter, MasterDTO.class)).sorted(Comparator.comparing(MasterDTO::getFiscalYearQuarterDesc).reversed()) // Sort in descending order
+                .collect(Collectors.toList());
     }
 
     @PostMapping(value = "/fiscalYearQuarter", consumes = "application/json", produces = "application/json")
