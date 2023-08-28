@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -124,5 +125,10 @@ public class DataDetailController {
         return StreamSupport.stream(savedDataDetails.spliterator(), false)
                 .map(dataDetail -> mapperUtil.getModelMapper().map(dataDetail, MasterDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/dataDetail/countsByLevers")
+    public Map<Long,Long> getCountsByLevers() {
+        return dataDetailService.getCountsByLevers();
     }
 }

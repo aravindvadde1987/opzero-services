@@ -4,6 +4,7 @@ import com.opzero.entity.DataDetail;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface DataDetailService {
@@ -24,4 +25,6 @@ public interface DataDetailService {
     public List<DataDetail> getDataDetailsByFiscalYearQuarterId(Long fiscalYearQuarterId);
 
     List<DataDetail> getDataDetailByProjectIdAndQuarterId(Long projectId, Long quarterId);
+
+    Map<Long, Long> getCountsByLevers();
 }

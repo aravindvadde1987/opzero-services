@@ -8,8 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DataDetailServiceImpl implements DataDetailService {
@@ -47,17 +50,25 @@ public class DataDetailServiceImpl implements DataDetailService {
     }
 
     @Override
-    public List<DataDetail> getDataDetailsByLeverIdAndfinQtrId(Long leverId,Long fiscalYearQuarterId) {
-        return dataDetailRepository.findByLeverIdAndFiscalYearQuarterId(leverId,fiscalYearQuarterId);
+    public List<DataDetail> getDataDetailsByLeverIdAndfinQtrId(Long leverId, Long fiscalYearQuarterId) {
+        return dataDetailRepository.findByLeverIdAndFiscalYearQuarterId(leverId, fiscalYearQuarterId);
     }
 
     @Override
-	public List<DataDetail> getDataDetailByProjectIdAndQuarterId(Long projectId, Long quarterId){
-		return dataDetailRepository.findByProjectIdAndFiscalYearQuarterId(projectId,quarterId)
-				.orElseThrow(()->  new ResponseStatusException(HttpStatus.NOT_FOUND, "DataDetail is not found for given projectId " + projectId));
-	}
-	@Override
-	public List<DataDetail> getDataDetailsByFiscalYearQuarterId(Long fiscalYearQuarterId) {
-		return dataDetailRepository.findByFiscalYearQuarterId(fiscalYearQuarterId);
-	}
+    public List<DataDetail> getDataDetailByProjectIdAndQuarterId(Long projectId, Long quarterId) {
+        return dataDetailRepository.findByProjectIdAndFiscalYearQuarterId(projectId, quarterId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "DataDetail is not found for given projectId " + projectId));
+    }
+
+    @Override
+    public List<DataDetail> getDataDetailsByFiscalYearQuarterId(Long fiscalYearQuarterId) {
+        return dataDetailRepository.findByFiscalYearQuarterId(fiscalYearQuarterId);
+    }
+
+    @Override
+    public Map<Long, Long> getCountsByLevers() {
+        return dataDetailRepository.getCountsByLevers().stream().collect(Collectors.toMap(
+                d -> d[0],
+                d -> d[1]));
+    }
 }
