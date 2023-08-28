@@ -1,9 +1,11 @@
 package com.opzero.controller;
 
 import com.opzero.entity.DataDetail;
+import com.opzero.entity.FiscalYearQuarter;
 import com.opzero.entity.Project;
 import com.opzero.entity.dto.MasterDTO;
 import com.opzero.service.DataDetailService;
+import com.opzero.service.FiscalYearQuarterService;
 import com.opzero.service.ProjectService;
 import com.opzero.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -26,6 +29,9 @@ public class DataDetailController {
     DataDetailService dataDetailService;
     @Autowired
     ProjectService projectService;
+
+    @Autowired
+    FiscalYearQuarterService fiscalYearQuarterService;
     @Autowired
     MapperUtil mapperUtil;
 
@@ -55,6 +61,7 @@ public class DataDetailController {
             Project proj = projectService.getProject(masterDTO.getProjectId()).get();
             masterDTO.setProjectName(proj.getProjectName());
             masterDTO.setActive(proj.isActive());
+            masterDTO.setFiscalYearQuarterDesc((fiscalYearQuarterService.getFiscalYearQuarter(masterDTO.getFiscalYearQuarterId())).get().getFiscalYearQuarterDesc());
         }
         return response;
     }
@@ -77,15 +84,17 @@ public class DataDetailController {
     public List<MasterDTO> getDataDetailByProjectIdAndQuarterId(@PathVariable("projectId") Long projectId, @PathVariable("quarterId") Long quarterId) {
         List<MasterDTO> response = dataDetailService.getDataDetailByProjectIdAndQuarterId(projectId, quarterId).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
         if (response.isEmpty()) {
-// get latest quarterId Details
-            return dataDetailService.getDataDetailsByProjectId(projectId)
+            Optional<DataDetail> latestDataDetails = dataDetailService.getDataDetailsByProjectId(projectId)
                     .stream()
-                    .max(Comparator.comparingInt(dataDetails -> Math.toIntExact(dataDetails.getFiscalYearQuarterId())))
-                    .map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class))
-                    .map(Collections::singletonList)
+                    .max(Comparator.comparing(dataDetails ->
+                            fiscalYearQuarterService.getFiscalYearQuarter(dataDetails.getFiscalYearQuarterId())
+                                    .orElse(new FiscalYearQuarter()) // Provide a default in case Optional is empty
+                                    .getEndDate()));
+
+            return latestDataDetails.map(dataDetails ->
+                            Collections.singletonList(mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)))
                     .orElse(Collections.emptyList());
-        } else
-            return response;
+        }  else return response;
     }
 
     @GetMapping("/dataDetail/fiscalYearQuarter/{quarterId}")
@@ -103,28 +112,20 @@ public class DataDetailController {
 
     @PostMapping(value = "/dataDetails", consumes = "application/json", produces = "application/json")
     public List<MasterDTO> saveDataDetail(@RequestBody List<MasterDTO> masterDTOList) {
-        List<DataDetail> dataDetailList = masterDTOList.stream()
-                .map(masterDTO -> mapperUtil.getModelMapper().map(masterDTO, DataDetail.class))
-                .collect(Collectors.toList());
+        List<DataDetail> dataDetailList = masterDTOList.stream().map(masterDTO -> mapperUtil.getModelMapper().map(masterDTO, DataDetail.class)).collect(Collectors.toList());
 
         Iterable<DataDetail> savedDataDetails = dataDetailService.saveDataDetails(dataDetailList);
 
-        return StreamSupport.stream(savedDataDetails.spliterator(), false)
-                .map(dataDetail -> mapperUtil.getModelMapper().map(dataDetail, MasterDTO.class))
-                .collect(Collectors.toList());
+        return StreamSupport.stream(savedDataDetails.spliterator(), false).map(dataDetail -> mapperUtil.getModelMapper().map(dataDetail, MasterDTO.class)).collect(Collectors.toList());
     }
 
     @PutMapping(value = "/dataDetails", consumes = "application/json", produces = "application/json")
     public List<MasterDTO> updateDataDetails(@RequestBody List<MasterDTO> masterDTOList) {
-        List<DataDetail> dataDetailList = masterDTOList.stream()
-                .map(masterDTO -> mapperUtil.getModelMapper().map(masterDTO, DataDetail.class))
-                .collect(Collectors.toList());
+        List<DataDetail> dataDetailList = masterDTOList.stream().map(masterDTO -> mapperUtil.getModelMapper().map(masterDTO, DataDetail.class)).collect(Collectors.toList());
 
         Iterable<DataDetail> savedDataDetails = dataDetailService.saveDataDetails(dataDetailList);
 
-        return StreamSupport.stream(savedDataDetails.spliterator(), false)
-                .map(dataDetail -> mapperUtil.getModelMapper().map(dataDetail, MasterDTO.class))
-                .collect(Collectors.toList());
+        return StreamSupport.stream(savedDataDetails.spliterator(), false).map(dataDetail -> mapperUtil.getModelMapper().map(dataDetail, MasterDTO.class)).collect(Collectors.toList());
     }
 
     @GetMapping("/dataDetail/countsByLevers")
