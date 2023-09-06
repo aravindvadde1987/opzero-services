@@ -12,7 +12,7 @@ public interface DataDetailRepository extends CrudRepository<DataDetail, Long> {
 
     List<DataDetail> findByProjectId(Long projectId);
 
-    List<DataDetail> findByLeverId(Long leverId);
+    List<DataDetail> findByLeverIdAndEffortSavedGreaterThan(Long leverId,int effortSavedGreaterThan);
 
     List<DataDetail> findByLeverIdAndFiscalYearQuarterId(Long leverId,Long fiscalYearQuarterId);
 

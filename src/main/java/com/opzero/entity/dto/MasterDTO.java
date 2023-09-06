@@ -19,38 +19,40 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MasterDTO {
 
-	private Long id;
-	private Long parentId;
-	private String name;
-	private String projectName;
-	private String scopeOfWork;
-	private Long teamSize;
-	private Long onshoreSize;
-	private Long offshoreSize;
-	private String engagementType;
-	private String operatingModel;
-	private Long fiscalYearQuarterId;
-	private Long leverId;
-	private Long displayOrder;
-	private Long projectId;
-	private Double avgEffortPerInc;
-	private Double totalIncidents;
-	private Double totalEffort;
-	private Double automatedPercent;
-	private Double effortPercent;
-	private Double effortSaved;
+    private Long id;
+    private Long parentId;
+    private String name;
+    private String projectName;
+    private String scopeOfWork;
+    private Long teamSize;
+    private Long onshoreSize;
+    private Long offshoreSize;
+    private String engagementType;
+    private String operatingModel;
+    private Long fiscalYearQuarterId;
+    private Long leverId;
+    private Long displayOrder;
 
-	private String solutionImplemented;
-	private String solutionLink;
-	private String fiscalYearQuarterDesc;
-	private Date startDate;
-	private Date endDate;
-	private boolean isActive;
-	private String createdBy;
-	private String updatedBy;
-	private String createdAt;
-	private String updatedAt;
+    private String displayColumnsLabels;
+    private Long projectId;
+    private Double avgEffortPerInc;
+    private Double totalIncidents;
+    private Double totalEffort;
+    private Double automatedPercent;
+    private Double effortPercent;
+    private Double effortSaved;
 
-	private List<MasterDTO> childrens;
+    private String solutionImplemented;
+    private String solutionLink;
+    private String fiscalYearQuarterDesc;
+    private Date startDate;
+    private Date endDate;
+    private boolean isActive;
+    private String createdBy;
+    private String updatedBy;
+    private String createdAt;
+    private String updatedAt;
+
+    private List<MasterDTO> childrens;
 
 }

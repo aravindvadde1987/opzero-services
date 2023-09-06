@@ -46,7 +46,7 @@ public class DataDetailServiceImpl implements DataDetailService {
 
     @Override
     public List<DataDetail> getDataDetailsByLeverId(Long leverId) {
-        return dataDetailRepository.findByLeverId(leverId);
+        return dataDetailRepository.findByLeverIdAndEffortSavedGreaterThan(leverId,0);
     }
 
     @Override

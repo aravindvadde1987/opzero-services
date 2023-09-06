@@ -23,6 +23,9 @@ public class Category {
 	private Long id;
 	@Column(name = "CATEGORY_NAME")
 	private String categoryName;
+
+	@Column(name = "DISPLAY_COLUMNS_LABELS")
+	private String displayColumnsLabels;
 	private Long displayOrder;
 	private boolean isActive;
 	private String createdBy;
