@@ -91,10 +91,17 @@ public class DataDetailController {
                                     .orElse(new FiscalYearQuarter()) // Provide a default in case Optional is empty
                                     .getEndDate()));
 
-            return latestDataDetails.map(dataDetails ->
+            List<MasterDTO> responseList = latestDataDetails.map(dataDetails ->
                             Collections.singletonList(mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)))
                     .orElse(Collections.emptyList());
-        }  else return response;
+            if (!responseList.isEmpty()) {
+                return dataDetailService.getDataDetailByProjectIdAndQuarterId
+                                (projectId, responseList.get(0).getFiscalYearQuarterId()).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).
+                        collect(Collectors.toList());
+            } else {
+                return Collections.emptyList();
+            }
+        } else return response;
     }
 
     @GetMapping("/dataDetail/fiscalYearQuarter/{quarterId}")
@@ -129,7 +136,7 @@ public class DataDetailController {
     }
 
     @GetMapping("/dataDetail/countsByLevers")
-    public Map<Long,Long> getCountsByLevers() {
+    public Map<Long, Long> getCountsByLevers() {
         return dataDetailService.getCountsByLevers();
     }
 }
