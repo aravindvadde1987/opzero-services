@@ -88,9 +88,16 @@ public class DataDetailController {
                                     .orElse(new FiscalYearQuarter()) // Provide a default in case Optional is empty
                                     .getEndDate()));
 
-            return latestDataDetails.map(dataDetails ->
+            List<MasterDTO> responseList = latestDataDetails.map(dataDetails ->
                             Collections.singletonList(mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)))
                     .orElse(Collections.emptyList());
+            if (!responseList.isEmpty()) {
+                return dataDetailService.getDataDetailByProjectIdAndQuarterId
+                                (projectId, responseList.get(0).getFiscalYearQuarterId()).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).
+                        collect(Collectors.toList());
+            } else {
+                return Collections.emptyList();
+            }
         } else return response;
     }
 
