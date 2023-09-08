@@ -45,8 +45,9 @@ public class DataDetailServiceImpl implements DataDetailService {
     }
 
     @Override
-    public List<DataDetail> getDataDetailsByLeverId(Long leverId) {
-        return dataDetailRepository.findByLeverIdAndEffortSavedGreaterThan(leverId,0);
+    public List<DataDetail> getDataDetailsByLeverId(Long leverId,Long projectId) {
+        return null==projectId ?dataDetailRepository.findByLeverIdAndEffortSavedGreaterThan(leverId,0):
+                dataDetailRepository.findByProjectIdAndLeverIdAndEffortSavedGreaterThan(projectId,leverId,0);
     }
 
     @Override
@@ -66,8 +67,9 @@ public class DataDetailServiceImpl implements DataDetailService {
     }
 
     @Override
-    public Map<Long, Long> getCountsByLevers() {
-        return dataDetailRepository.getCountsByLevers().stream().collect(Collectors.toMap(
+    public Map<Long, Long> getCountsByLevers(Long projectId) {
+        return (null == projectId ?dataDetailRepository.getCountsByLevers():dataDetailRepository.getCountsByLeversByProject(projectId))
+                .stream().collect(Collectors.toMap(
                 d -> d[0],
                 d -> d[1]));
     }

@@ -52,11 +52,8 @@ public class DataDetailController {
     }
 
     @GetMapping("/dataDetail/leverProjects/{leverId}")
-    public List<MasterDTO> getProjectDataDetailsByLeverId(@PathVariable("leverId") Long leverId) {
-        if (dataDetailService.getDataDetailsByLeverId(leverId).size() == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "DataDetail is not found for given leverId " + leverId);
-        }
-        List<MasterDTO> response = dataDetailService.getDataDetailsByLeverId(leverId).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
+    public List<MasterDTO> getProjectDataDetailsByLeverId(@PathVariable("leverId") Long leverId,@RequestParam(value = "projectId", required = false) Long projectId) {
+        List<MasterDTO> response = dataDetailService.getDataDetailsByLeverId(leverId,projectId).stream().map(dataDetails -> mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)).collect(Collectors.toList());
         for (MasterDTO masterDTO : response) {
             Project proj = projectService.getProject(masterDTO.getProjectId()).get();
             masterDTO.setProjectName(proj.getProjectName());
@@ -94,7 +91,7 @@ public class DataDetailController {
             return latestDataDetails.map(dataDetails ->
                             Collections.singletonList(mapperUtil.getModelMapper().map(dataDetails, MasterDTO.class)))
                     .orElse(Collections.emptyList());
-        }  else return response;
+        } else return response;
     }
 
     @GetMapping("/dataDetail/fiscalYearQuarter/{quarterId}")
@@ -129,7 +126,7 @@ public class DataDetailController {
     }
 
     @GetMapping("/dataDetail/countsByLevers")
-    public Map<Long,Long> getCountsByLevers() {
-        return dataDetailService.getCountsByLevers();
+    public Map<Long, Long> getCountsByLevers(@RequestParam(value = "projectId", required = false) Long projectId) {
+        return dataDetailService.getCountsByLevers(projectId);
     }
 }

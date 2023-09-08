@@ -18,7 +18,7 @@ public interface DataDetailService {
 
     public List<DataDetail> getDataDetailsByProjectId(Long projectId);
 
-    public List<DataDetail> getDataDetailsByLeverId(Long leverId);
+    public List<DataDetail> getDataDetailsByLeverId(Long leverId,Long projectId);
 
     public List<DataDetail> getDataDetailsByLeverIdAndfinQtrId(Long leverId,Long fiscalYearQuarterId);
 
@@ -26,5 +26,5 @@ public interface DataDetailService {
 
     List<DataDetail> getDataDetailByProjectIdAndQuarterId(Long projectId, Long quarterId);
 
-    Map<Long, Long> getCountsByLevers();
+    Map<Long, Long> getCountsByLevers(Long projectId);
 }
