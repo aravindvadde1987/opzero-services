@@ -63,5 +63,10 @@ public class MapperUtil {
         projectToMasterType.addMapping(Project::getAccountId, MasterDTO::setParentId);
         projectToMasterType.addMapping(Project::getProjectName, MasterDTO::setName);
 
+        //Data Detail
+        TypeMap<MasterDTO, DataDetail> masterDTODataDetailTypeMapType=this.modelMapper.createTypeMap(MasterDTO.class, DataDetail.class);
+        masterDTODataDetailTypeMapType.addMapping(MasterDTO::getChildrens, DataDetail::setSolutionDetails);
+        TypeMap<DataDetail, MasterDTO> dataDetailMasterDTOTypeMapToMasterType=this.modelMapper.createTypeMap(DataDetail.class, MasterDTO.class);
+        dataDetailMasterDTOTypeMapToMasterType.addMapping(DataDetail::getSolutionDetails, MasterDTO::setChildrens);
     }
 }

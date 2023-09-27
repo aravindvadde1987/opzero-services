@@ -35,15 +35,18 @@ public class MasterDTO {
 
     private String displayColumnsLabels;
     private Long projectId;
-    private Double avgEffortPerInc;
+    private Double actualAvgEffortPerInc;
+    private Double pricedAvgEffortPerInc;
+    private Double pricedAvgIncidentsPerQtr;
+    private Double actualAvgIncidentsPerQtr;
     private Double totalIncidents;
     private Double totalEffort;
     private Double automatedPercent;
     private Double effortPercent;
     private Double effortSaved;
-
     private String solutionImplemented;
     private String solutionLink;
+    private String technologiesUsed;
     private String fiscalYearQuarterDesc;
     private Date startDate;
     private Date endDate;
@@ -52,7 +55,5 @@ public class MasterDTO {
     private String updatedBy;
     private String createdAt;
     private String updatedAt;
-
     private List<MasterDTO> childrens;
-
 }

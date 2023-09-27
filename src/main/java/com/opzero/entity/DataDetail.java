@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -24,10 +25,14 @@ public class DataDetail {
     private Long fiscalYearQuarterId;
     private Long leverId;
     private Long projectId;
-    @Column(name = "AVG_EFFORT_PER_INC")
-    private Double avgEffortPerInc;
-    @Column(name = "TOTAL_INCIDENTS")
-    private Double totalIncidents;
+    @Column(name = "PRICED_AVG_EFFORT_PER_INC")
+    private Double pricedAvgEffortPerInc;
+    @Column(name = "PRICED_AVG_INCIDENTS_PER_QTR")
+    private Double pricedAvgIncidentsPerQtr;
+    @Column(name = "ACTUAL_AVG_EFFORT_PER_INC")
+    private Double actualAvgEffortPerInc;
+    @Column(name = "ACTUAL_AVG_INCIDENTS_PER_QTR")
+    private Double actualAvgIncidentsPerQtr;
     @Column(name = "TOTAL_EFFORT")
     private Double totalEffort;
     @Column(name = "AUTOMATED_PERCENT")
@@ -36,11 +41,6 @@ public class DataDetail {
     private Double effortPercent;
     @Column(name = "EFFORT_SAVED")
     private Double effortSaved;
-
-    @Column(name = "SOL_IMPLEMENTED")
-    private String solutionImplemented;
-    @Column(name = "SOL_link")
-    private String solutionLink;
     private String createdBy;
     private String updatedBy;
     @Column(name = "CREATED_AT", nullable = false, updatable = false)
@@ -48,4 +48,6 @@ public class DataDetail {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dataDetail")
+    private List<SolutionDetail> solutionDetails;
 }

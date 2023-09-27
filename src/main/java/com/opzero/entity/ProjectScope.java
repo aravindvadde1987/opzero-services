@@ -1,41 +1,30 @@
 package com.opzero.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Builder(toBuilder = true)
-public class Project {
+public class ProjectScope {
     @Id
-    @Column(name = "PROJECT_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "PROJECT_SCOPE_ID")
     private Long id;
-    @Column(name = "ACCOUNT_ID")
-    private Long accountId;
-    @Column(name = "PROJECT_NAME")
-    private String projectName;
-    private String scopeOfWork;
-    private Long teamSize;
-    private Long onshoreSize;
-    private Long offshoreSize;
-    private String engagementType;
-    private String operatingModel;
-    private boolean isActive;
+    @Column(name = "PROJECT_SCOPE_DESC")
+    private String projectScopeDesc;
     private String createdBy;
     private String updatedBy;
-    @Column(name = "START_DATE")
-    private Date startDate;
-    @Column(name = "END_DATE")
-    private Date endDate;
     @Column(name = "CREATED_AT", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
