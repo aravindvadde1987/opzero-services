@@ -32,7 +32,7 @@ public class MasterDTO {
     private Long fiscalYearQuarterId;
     private Long leverId;
     private Long displayOrder;
-
+    private Long projectScopeId;
     private String displayColumnsLabels;
     private Long projectId;
     private Double actualAvgEffortPerInc;
