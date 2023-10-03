@@ -1,7 +1,9 @@
 package com.opzero.service.impl;
 
 import com.opzero.entity.DataDetail;
+import com.opzero.entity.SolutionDetail;
 import com.opzero.repository.DataDetailRepository;
+import com.opzero.repository.SolutionDetailRepository;
 import com.opzero.service.DataDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,9 +21,25 @@ public class DataDetailServiceImpl implements DataDetailService {
     @Autowired
     DataDetailRepository dataDetailRepository;
 
+    @Autowired
+    SolutionDetailRepository solutionDetailRepository;
+
     @Override
     public Iterable<DataDetail> saveDataDetails(List<DataDetail> dataDetail) {
-        return dataDetailRepository.saveAll(dataDetail);
+        Iterable<DataDetail> savedDataDetails = dataDetailRepository.saveAll(dataDetail);
+        // Iterate through saved DataDetail objects to get SolutionDetail
+        for (DataDetail d : savedDataDetails) {
+            // Save SolutionDetail using the SolutionDetailRepository
+            if (!d.getSolutionDetails().isEmpty()) {
+                for (SolutionDetail solutionDetail : d.getSolutionDetails()) {
+                    solutionDetail.setDataDetail(d);
+                    // Save the updated SolutionDetail using the SolutionDetailRepository
+                    solutionDetailRepository.save(solutionDetail);
+                }
+                solutionDetailRepository.saveAll(d.getSolutionDetails());
+            }
+        }
+        return savedDataDetails;
     }
 
     @Override
@@ -57,8 +75,7 @@ public class DataDetailServiceImpl implements DataDetailService {
 
     @Override
     public List<DataDetail> getDataDetailByProjectIdAndQuarterId(Long projectId, Long quarterId) {
-        return dataDetailRepository.findByProjectIdAndFiscalYearQuarterId(projectId, quarterId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "DataDetail is not found for given projectId " + projectId));
+        return dataDetailRepository.findByProjectIdAndFiscalYearQuarterId(projectId, quarterId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "DataDetail is not found for given projectId " + projectId));
     }
 
     @Override

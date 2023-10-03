@@ -1,41 +1,38 @@
 package com.opzero.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Builder(toBuilder = true)
-public class Project {
+public class ProjectPlanAndActual {
     @Id
-    @Column(name = "PROJECT_ID")
+    @Column(name = "PROJECT_PLAN_AND_ACTUAL_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "ACCOUNT_ID")
-    private Long accountId;
-    @Column(name = "PROJECT_NAME")
-    private String projectName;
-    private String scopeOfWork;
-    private Long teamSize;
-    private Long onshoreSize;
-    private Long offshoreSize;
-    private String engagementType;
-    private String operatingModel;
-    private boolean isActive;
+    private Long projectId;
+    @Column(name = "PROJECT_SCOPE_ID")
+    private Long projectScopeId;
+    @Column(name = "YEAR")
+    private String year;
+    private Double plannedFte;
+    private Double actualFte;
+    @Column(name = "ACTUAL_AVG_INCIDENTS_PER_QTR")
+    private Double actualAvgIncidentsPerQtr;
+    @Column(name = "DISTRIBUTION_PERCENT")
+    private Double distributionPercent;
     private String createdBy;
     private String updatedBy;
-    @Column(name = "START_DATE")
-    private Date startDate;
-    @Column(name = "END_DATE")
-    private Date endDate;
     @Column(name = "CREATED_AT", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
