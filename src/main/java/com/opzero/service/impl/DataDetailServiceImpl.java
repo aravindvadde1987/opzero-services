@@ -10,10 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,23 +22,45 @@ public class DataDetailServiceImpl implements DataDetailService {
     @Autowired
     SolutionDetailRepository solutionDetailRepository;
 
-    @Override
-    public Iterable<DataDetail> saveDataDetails(List<DataDetail> dataDetail) {
-        Iterable<DataDetail> savedDataDetails = dataDetailRepository.saveAll(dataDetail);
-        // Iterate through saved DataDetail objects to get SolutionDetail
-        for (DataDetail d : savedDataDetails) {
-            // Save SolutionDetail using the SolutionDetailRepository
-            if (!d.getSolutionDetails().isEmpty()) {
-                for (SolutionDetail solutionDetail : d.getSolutionDetails()) {
-                    solutionDetail.setDataDetail(d);
-                    // Save the updated SolutionDetail using the SolutionDetailRepository
-                    solutionDetailRepository.save(solutionDetail);
+    public List<DataDetail> saveDataDetails(List<DataDetail> dataDetails) {
+        List<DataDetail> savedDataDetails = new ArrayList<>();
+
+        for (DataDetail dataDetailIterator : dataDetails) {
+            if (dataDetailIterator.getId() != null) {
+                // Existing DataDetail, update it
+                DataDetail persistedDataDetail = dataDetailRepository.save(dataDetailIterator);
+
+                for (SolutionDetail solutionDetail : persistedDataDetail.getSolutionDetails()) {
+
+                    solutionDetailRepository.delete(solutionDetail);
                 }
-                solutionDetailRepository.saveAll(d.getSolutionDetails());
+                // Clear existing solutionDetails and add new ones
+                persistedDataDetail.getSolutionDetails().clear();
+                for (SolutionDetail solutionDetail : dataDetailIterator.getSolutionDetails()) {
+                    solutionDetail.setDataDetail(persistedDataDetail);
+                    // Save the updated SolutionDetail using the SolutionDetailRepository
+                    persistedDataDetail.getSolutionDetails().add(solutionDetailRepository.save(solutionDetail));
+                }
+
+                savedDataDetails.add(persistedDataDetail);
+            } else {
+                // New DataDetail, directly save it
+                DataDetail persistedDataDetail = dataDetailRepository.save(dataDetailIterator);
+
+                // Save the new SolutionDetails
+                List<SolutionDetail> solutionDetails = new CopyOnWriteArrayList<>(dataDetailIterator.getSolutionDetails());
+
+                for (SolutionDetail solutionDetail : solutionDetails) {
+                    solutionDetail.setDataDetail(persistedDataDetail);
+                    // Save the SolutionDetail using the SolutionDetailRepository
+                    persistedDataDetail.getSolutionDetails().add(solutionDetailRepository.save(solutionDetail));
+                }
+                savedDataDetails.add(persistedDataDetail);
             }
         }
         return savedDataDetails;
     }
+
 
     @Override
     public Optional<DataDetail> getDataDetail(Long dataDetailId) {
@@ -63,9 +83,9 @@ public class DataDetailServiceImpl implements DataDetailService {
     }
 
     @Override
-    public List<DataDetail> getDataDetailsByLeverId(Long leverId,Long projectId) {
-        return null==projectId ?dataDetailRepository.findByLeverIdAndEffortSavedGreaterThan(leverId,0):
-                dataDetailRepository.findByProjectIdAndLeverIdAndEffortSavedGreaterThan(projectId,leverId,0);
+    public List<DataDetail> getDataDetailsByLeverId(Long leverId, Long projectId) {
+        return null == projectId ? dataDetailRepository.findByLeverIdAndEffortSavedGreaterThan(leverId, 0) :
+                dataDetailRepository.findByProjectIdAndLeverIdAndEffortSavedGreaterThan(projectId, leverId, 0);
     }
 
     @Override
@@ -85,9 +105,9 @@ public class DataDetailServiceImpl implements DataDetailService {
 
     @Override
     public Map<Long, Long> getCountsByLevers(Long projectId) {
-        return (null == projectId ?dataDetailRepository.getCountsByLevers():dataDetailRepository.getCountsByLeversByProject(projectId))
+        return (null == projectId ? dataDetailRepository.getCountsByLevers() : dataDetailRepository.getCountsByLeversByProject(projectId))
                 .stream().collect(Collectors.toMap(
-                d -> d[0],
-                d -> d[1]));
+                        d -> d[0],
+                        d -> d[1]));
     }
 }
