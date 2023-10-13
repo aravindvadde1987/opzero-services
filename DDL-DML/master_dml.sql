@@ -34,3 +34,6 @@ VALUES (1, 1, 1, 20.00, 5.00, 18.00, 4.00, 'User21', 'User22');
 INSERT INTO OPZR.SOLUTION_DETAIL (SOLUTION_IMPLEMENTED, TECHNOLOGIES_USED,SOLUTION_LINK, DATA_DETAIL_ID)
 VALUES ('Solution Implemented 1', 'Technology 1, Technology 2', 'www.solutionlink.com',1);
 
+INSERT INTO OPZR.Scope (scope_name,SCOPE_ID, IS_ACTIVE, CREATED_BY, UPDATED_BY)
+VALUES ('scope 1', 1,1, 'User13', 'User14');
+

@@ -1,8 +1,5 @@
 package com.opzero.entity;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,21 +8,22 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Category {
+public class Scope {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "CATEGORY_ID")
+	@Column(name = "SCOPE_ID")
 	private Long id;
-	@Column(name = "CATEGORY_NAME")
-	private String categoryName;
+	@Column(name = "SCOPE_NAME")
+	private String scopeName;
 
-	@Column(name = "DISPLAY_COLUMNS_LABELS")
-	private String displayColumnsLabels;
 	private Long displayOrder;
 	private boolean isActive;
 	private String createdBy;
@@ -35,9 +33,6 @@ public class Category {
 	private LocalDateTime createdAt;
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
-    private List<Lever> levers;
-	@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn(name = "SCOPE_ID")
-	private Scope scope;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "scope")
+    private List<Category> categories;
 }

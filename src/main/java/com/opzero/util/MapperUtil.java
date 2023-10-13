@@ -34,6 +34,14 @@ public class MapperUtil {
         AccountToMasterType.addMapping(Account::getOfferingId, MasterDTO::setParentId);
         AccountToMasterType.addMapping(Account::getAccountName, MasterDTO::setName);
 
+        //Scope
+        TypeMap<MasterDTO, Scope> masterToScopeType=this.modelMapper.createTypeMap(MasterDTO.class, Scope.class);
+        masterToScopeType.addMapping(MasterDTO::getName, Scope::setScopeName);
+        masterToScopeType.addMapping(MasterDTO::getChildrens, Scope::setCategories);
+        TypeMap<Scope, MasterDTO> scopeToMasterType=this.modelMapper.createTypeMap(Scope.class, MasterDTO.class);
+        scopeToMasterType.addMapping(Scope::getScopeName, MasterDTO::setName);
+        scopeToMasterType.addMapping(Scope::getCategories, MasterDTO::setChildrens);
+
         //Category
         TypeMap<MasterDTO, Category> masterToCategoryType=this.modelMapper.createTypeMap(MasterDTO.class, Category.class);
         masterToCategoryType.addMapping(MasterDTO::getName, Category::setCategoryName);
