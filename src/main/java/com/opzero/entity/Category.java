@@ -23,6 +23,8 @@ public class Category {
 	private Long id;
 	@Column(name = "CATEGORY_NAME")
 	private String categoryName;
+	@Column(name = "PROJECT_SCOPE_ID")
+	private String projectScopeId;
 
 	@Column(name = "DISPLAY_COLUMNS_LABELS")
 	private String displayColumnsLabels;

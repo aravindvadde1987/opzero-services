@@ -3,6 +3,8 @@ package com.opzero.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.opzero.entity.Lever;
+import com.opzero.service.ScopeService;
 import com.opzero.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +21,12 @@ import com.opzero.service.CategoryService;
 public class CategoryController {
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    ScopeService scopeService;
     @Autowired
     MapperUtil mapperUtil;
+
 
     @GetMapping("/category/{id}")
     public MasterDTO getCategory(@PathVariable("id") Long id) {
@@ -48,16 +54,24 @@ public class CategoryController {
 
     @PostMapping(value = "/category", consumes = "application/json", produces = "application/json")
     public MasterDTO saveCategory(@RequestBody MasterDTO masterDTO) {
-        Category category = categoryService.saveCategory(mapperUtil.getModelMapper().map(masterDTO, Category.class));
+//Default value until we start using / implementing
+        masterDTO.setProjectScopeId(1L);
+        Category input = mapperUtil.getModelMapper().map(masterDTO, Category.class);
+        input.setScope(scopeService.getScope(masterDTO.getParentId()).get());
+        Category category = categoryService.saveCategory(input);
         return mapperUtil.getModelMapper().map(category, MasterDTO.class);
     }
 
     @PutMapping(value = "/category", consumes = "application/json", produces = "application/json")
     public MasterDTO updateCategory(@RequestBody MasterDTO masterDTO) {
+        //Default value until we start using / implementing
+        masterDTO.setProjectScopeId(1L);
         if (!categoryService.getCategory(masterDTO.getId()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category is not found for given id " + masterDTO.getId());
         }
-        Category category = categoryService.saveCategory(mapperUtil.getModelMapper().map(masterDTO, Category.class));
+        Category input = mapperUtil.getModelMapper().map(masterDTO, Category.class);
+        input.setScope(scopeService.getScope(masterDTO.getParentId()).get());
+        Category category = categoryService.saveCategory(input);
         return mapperUtil.getModelMapper().map(category, MasterDTO.class);
     }
 }
